@@ -1,4 +1,4 @@
-export ZSH="/home/federico/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="cypher"

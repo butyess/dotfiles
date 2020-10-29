@@ -46,8 +46,8 @@ set mouse=a
 " Python options for interpreter,
 " See :h nvim-python or
 " https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim
-let g:python_host_prog = '/home/federico/.pyenv/neovim2/bin/python'
-let g:python3_host_prog = '/home/federico/.pyenv/neovim3/bin/python'
+let g:python_host_prog = '$HOME/.pyenv/neovim2/bin/python'
+let g:python3_host_prog = '$HOME/.pyenv/neovim3/bin/python'
 
 map <Leader>y "+y
 map <Leader>p "+p
@@ -97,7 +97,7 @@ let g:UltiSnipsExpandTrigger = '<tab>'
 let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDirectories = ['/home/federico/.config/nvim/UltiSnips']
+let g:UltiSnipsSnippetDirectories = ['$HOME/.config/nvim/UltiSnips']
 
 " DelimtMate options
 au FileType tex let b:delimitMate_matchpairs = "{:}"
