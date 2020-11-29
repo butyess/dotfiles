@@ -190,6 +190,18 @@ snippet @lr "left right parenthesis" i
 \left$1 $2 \right$1 $0
 endsnippet
 
+snippet del "delimiters (commath package)"
+\del{$1}$0
+endsnippet
+
+snippet ceil "ceil" i
+\ceil*{$1}$0
+endsnippet
+
+snippet floor "floor" i
+\floor*{$1}$0
+endsnippet
+
 snippet @ang "angles" i
 \langle $1 \rangle $0
 endsnippet
@@ -213,6 +225,10 @@ endsnippet
 
 snippet @intr "integral" i
 \int_{$1}^{$2} $3\ dx$0
+endsnippet
+
+snippet frac "fraction" i
+\frac{$1}{$2}$0
 endsnippet
 
 snippet @fr "fraction" i
