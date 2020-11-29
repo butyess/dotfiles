@@ -1,0 +1,26 @@
+include "%L"
+
+<Multi_key> <grave> <a>				: "á"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <a> <grave>				: "á"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <apostrophe> <a>		: "à"	uacute # LATIN SMALL LETTER U WITH ACUTE
+<Multi_key> <a> <apostrophe>		: "à"	uacute # LATIN SMALL LETTER U WITH ACUTE
+
+<Multi_key> <grave> <e>				: "é"	egrave # LATIN SMALL LETTER E WITH GRAVE
+<Multi_key> <e> <grave>				: "é"	egrave # LATIN SMALL LETTER E WITH GRAVE
+<Multi_key> <apostrophe> <e>		: "è"	eacute # LATIN SMALL LETTER E WITH ACUTE
+<Multi_key> <e> <apostrophe>		: "è"	eacute # LATIN SMALL LETTER E WITH ACUTE
+
+<Multi_key> <grave> <i>				: "í"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <i> <grave>				: "í"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <apostrophe> <i>		: "ì"	uacute # LATIN SMALL LETTER U WITH ACUTE
+<Multi_key> <i> <apostrophe>		: "ì"	uacute # LATIN SMALL LETTER U WITH ACUTE
+
+<Multi_key> <grave> <o>				: "ó"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <o> <grave>				: "ó"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <apostrophe> <o>		: "ò"	uacute # LATIN SMALL LETTER U WITH ACUTE
+<Multi_key> <o> <apostrophe>		: "ò"	uacute # LATIN SMALL LETTER U WITH ACUTE
+
+<Multi_key> <grave> <u>				: "ú"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <u> <grave>				: "ú"	ugrave # LATIN SMALL LETTER U WITH GRAVE
+<Multi_key> <apostrophe> <u>		: "ù"	uacute # LATIN SMALL LETTER U WITH ACUTE
+<Multi_key> <u> <apostrophe>		: "ù"	uacute # LATIN SMALL LETTER U WITH ACUTE

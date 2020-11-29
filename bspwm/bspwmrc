@@ -1,40 +1,69 @@
-#! /bin/sh
+#!/bin/bash
+
 pgrep -x sxhkd > /dev/null || sxhkd &
 
-# Xorg set
+########
+# Xorg #
+########
 xsetroot -cursor_name left_ptr &
 xset led 3 &
-setxkbmap -layout it &
 numlockx &
+
+# Screen blanking and autosuspend
+xset s 0 0 &
+xset dpms 0 0 0 &
+xidlehook --socket /tmp/xidlehook_socket.sock \
+    --not-when-fullscreen --not-when-audio \
+    --timer 540 'notify-send "Screen locking in 1 minute"' ''\
+    --timer 60 'xset dpms force off' '' \
+    --timer 300 'systemctl suspend' '' &
+
+setxkbmap -layout us &
+setxkbmap -option compose:rctrl &
 
 # Monitors
 xrandr --output VGA-1 --auto --right-of HDMI-1
 xrandr --output DVI-D-1 --auto --left-of HDMI-1
 
-# Customization
-feh --bg-fill ~/Pictures/Wallpapers/wall.jpg &
-picom --config ~/.config/picom/picom.conf & # standard config
-~/.config/polybar/launch.sh & # number 12 @ adi1090x/polybar-themes
+#################
+# Customization #
+#################
+feh --bg-fill $HOME/Pictures/Wallpapers/wall.jpg &
+picom --config $HOME/.config/picom/picom.conf &
+$HOME/.config/polybar/theme-12/launch.sh &
 wmname LG3D &
 
-# Applications
+################
+# Applications #
+################
 dunst &
-telegram-desktop -startintray &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 greenclip daemon &
+/usr/bin/dropbox &
+telegram-desktop -startintray &
 
-# Bspwm configs
-bspc monitor DVI-D-1 -d 1 4 5
-bspc monitor HDMI-1 -d 2 6 7
-bspc monitor VGA-1 -d 3 8 9
+#################
+# Bspwm configs #
+#################
+bspc monitor DVI-D-1 -d 1 4
+bspc monitor HDMI-1 -d 2 5
+bspc monitor VGA-1 -d 3 6
 
 bspc config border_width         2
-bspc config window_gap           9
+bspc config window_gap           5
+
+bspc config active_border_color     \#30302f
+bspc config normal_border_color     \#30302f
+bspc config focused_border_color    \#817f7f
 
 bspc config split_ratio          0.5
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
+bspc config click_to_focus      any
+
 # Rules
-bspc rule -a Chromium:crx_diankknpkndanachmlckaikddgcehkod state=floating follow=on # chrome extension
 bspc rule -a Gnome-calculator state=floating follow=on
+bspc rule -a ObinsKit state=tiled
+bspc rule -a Zathura state=tiled
+
