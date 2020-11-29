@@ -7,27 +7,27 @@ super + Return
 	tilix --profile=Bspwm --window-style=borderless &
 
 # web browser
-super + b
-    chromium &
-
 super + alt + b
-    firefox &
+	chromium &
 
-# nautilus
+super + b
+	firefox &
+
+# file manager
 super + e
-    nautilus &
+	pcmanfm &
 
 # program launcher
 super + @space
-	rofi -show drun -modi "drun,file-browser,run" -terminal 'tilix --window-style=disable-csd-hide-toolbar --profile=Bspwm'
+	$HOME/.config/sxhkd/launch_rofi.sh &
 
 # window switcher
 alt + Tab
-    rofi -show window -modi "window"
+	rofi -show window -modi "window"
 
 # clipboard manager
 super + v
-    rofi -show clipboard -modi "clipboard:greenclip print"
+	rofi -show clipboard -modi "clipboard:greenclip print"
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -37,10 +37,24 @@ super + Escape
 # Volume control
 XF86AudioLowerVolume
 	amixer set Master 5%-
+
 XF86AudioRaiseVolume
-    amixer set Master 5%+
+	amixer set Master 5%+
+
 XF86AudioMute
-    amixer set Master toggle
+	amixer set Master toggle
+
+XF86AudioPlay
+	playerctl play-pause
+
+XF86AudioStop
+	playerctl pause
+
+XF86AudioPrev
+	playerctl previous
+
+XF86AudioNext
+	playerctl next
 
 #
 # bspwm hotkeys
@@ -61,6 +75,14 @@ super + m
 # send the newest marked node to the newest preselected node
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
+
+# add a desktop to current monitor
+super + a
+	bspc monitor focused -a X
+
+# delete current desktop
+super + shift + a
+	bspc desktop focused -r
 
 #
 # state/flags
@@ -84,7 +106,7 @@ super + {h,j,k,l}
 
 # focus the next/previous desktop in the current monitor
 super + shift + {j,k}
-	bspc desktop -f {next,prev}.local
+	bspc desktop -f {prev,next}.local
 
 # swap node with direction
 super + alt + ctrl + {h,j,k,l}
