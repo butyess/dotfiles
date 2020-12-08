@@ -30,7 +30,7 @@ xrandr --output DVI-D-1 --auto --left-of HDMI-1
 #################
 feh --bg-fill $HOME/Pictures/Wallpapers/wall.jpg &
 picom --config $HOME/.config/picom/picom.conf &
-$HOME/.config/polybar/theme-12/launch.sh &
+$HOME/.config/polybar/launch.sh &
 wmname LG3D &
 
 ################
