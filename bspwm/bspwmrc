@@ -6,7 +6,6 @@ pgrep -x sxhkd > /dev/null || sxhkd &
 # Xorg #
 ########
 xsetroot -cursor_name left_ptr &
-xset led 3 &
 numlockx &
 
 # Screen blanking and autosuspend
@@ -18,8 +17,9 @@ xidlehook --socket /tmp/xidlehook_socket.sock \
     --timer 60 'xset dpms force off' '' \
     --timer 300 'systemctl suspend' '' &
 
-setxkbmap -layout us &
-setxkbmap -option compose:rctrl &
+
+# setxkbmap -layout us &
+# setxkbmap -option compose:rctrl &
 
 # Monitors
 xrandr --output VGA-1 --auto --right-of HDMI-1
@@ -28,7 +28,7 @@ xrandr --output DVI-D-1 --auto --left-of HDMI-1
 #################
 # Customization #
 #################
-feh --bg-fill $HOME/Pictures/Wallpapers/wall.jpg &
+feh --bg-fill $HOME/Pictures/Wallpapers/wall2.jpg &
 picom --config $HOME/.config/picom/picom.conf &
 $HOME/.config/polybar/launch.sh &
 wmname LG3D &
@@ -39,7 +39,7 @@ wmname LG3D &
 dunst &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 greenclip daemon &
-/usr/bin/dropbox &
+# /usr/bin/dropbox &
 telegram-desktop -startintray &
 
 #################
@@ -49,8 +49,8 @@ bspc monitor DVI-D-1 -d 1 4
 bspc monitor HDMI-1 -d 2 5
 bspc monitor VGA-1 -d 3 6
 
-bspc config border_width         2
-bspc config window_gap           5
+bspc config border_width         1
+bspc config window_gap           3
 
 bspc config active_border_color     \#30302f
 bspc config normal_border_color     \#30302f
@@ -67,4 +67,6 @@ bspc config ignore_ewmh_focus true
 bspc rule -a Gnome-calculator state=floating follow=on
 bspc rule -a ObinsKit state=tiled
 bspc rule -a Zathura state=tiled
+bspc rule -a QEMU state=floating follow=on
+bspc rule -a "Jetbrains Toolbox" state=floating follow=on
 

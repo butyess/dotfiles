@@ -15,11 +15,15 @@ super + alt + b
 
 # file manager
 super + e
-	pcmanfm &
+	nautilus &
 
 # program launcher
 super + @space
 	$HOME/.config/sxhkd/launch_rofi.sh &
+
+# # toggle polybar
+# super + p
+# 	$HOME/.config/sxhkd/toggle_polybar.sh
 
 # window switcher
 alt + Tab
@@ -35,13 +39,16 @@ super + Escape
 
 # Volume control
 XF86AudioLowerVolume
-	amixer set Master 5%-
+	pulseaudio-control --volume-max 150 --volume-step 5 down
+#amixer set Master 5%-
 
 XF86AudioRaiseVolume
-	amixer set Master 5%+
+	pulseaudio-control --volume-max 150 --volume-step 5 up
+#amixer set Master 5%+
 
 XF86AudioMute
-	amixer set Master toggle
+	pulseaudio-control togmute
+#amixer set Master toggle
 
 XF86AudioPlay
 	playerctl play-pause
@@ -67,6 +74,14 @@ super + alt + {q,r}
 super + {_,shift + }w
 	bspc node -{c,k}
 
+# set the window state
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
 # alternate between the tiled and monocle layout
 super + m
 	bspc desktop -l next
@@ -74,6 +89,10 @@ super + m
 # send the newest marked node to the newest preselected node
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
+
+#
+# Edit desktop number
+#
 
 # add a desktop to current monitor
 super + a
@@ -84,16 +103,24 @@ super + shift + a
 	bspc desktop focused -r
 
 #
-# state/flags
+# Window gap and border width
 #
 
-# set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+# increase/decrease window gap
+super + {minus, equal}
+	bspc config window_gap $((`bspc config -d focused window_gap` {+ 5, - 5}))
 
-# set the node flags
-super + ctrl + {m,x,y,z}
-	bspc node -g {marked,locked,sticky,private}
+# default window gap
+super + plus
+	bspc config window_gap 3
+
+# increase/decrease border width
+super + ctrl + {minus, equal}
+	bspc config border_width $((`bspc config -d focused border_width` {+ 1, - 1}))
+
+# default border width
+super + ctrl + plus
+	bspc config border_width 1
 
 #
 # focus/swap
@@ -170,6 +197,10 @@ super + shift + {h,l}
 # move the node in the next desktop of current monitor
 super + d
 	bspc node -d next.local
+
+# move the node in the next desktop of current monitor
+super + shift + d
+	bspc node -d prev.local
 
 # move a floating window
 super + {Left,Down,Up,Right}
