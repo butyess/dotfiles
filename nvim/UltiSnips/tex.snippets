@@ -1,339 +1,58 @@
-## LATEX SNIPPETS
-
-# Matrix eskere
 global !p
-
-def create_matrix(snip):
-	matrix_str = (snip.buffer[snip.line].split('mat')[0]+'matrix').strip()
-
-	rows = 'x'.join(snip.buffer[snip.line].split("x", 2)[:-1])
-	cols = 'x'.join(snip.buffer[snip.line].split("x", 2)[-1:])
-
-	int_val = lambda string: int(''.join(s for s in string if s.isdigit()))
-
-	rows = int_val(rows)
-	cols = int_val(cols)
-
-	offset = cols + 1
-	old_spacing = snip.buffer[snip.line][:snip.buffer[snip.line].rfind('\t') + 1]
-
-	snip.buffer[snip.line] = ''
-
-	final_str = old_spacing + "\\begin{"+matrix_str+"}\n"
-
-	for i in range(rows):
-			final_str += old_spacing + '\t'
-			final_str += " & ".join(['$' + str(i * cols + j + offset) for j in range(cols)])
-
-			final_str += " \\\\\\\n"
-
-	final_str += old_spacing + "\\end{"+matrix_str+"}\n$0"
-
-	snip.expand_anon(final_str)
-endglobal
-
-# Generate list
-global !p
-
-def create_list(variables, separator, count, postfix):
-	return f' {separator} '.join(
-		[' '.join([var + postfix.replace('n', str(i), postfix.count('n')) 
-			for var in variables]) 
-			for i in range(1, count - 1)] + \
-		['\\dots', ' '.join([v + postfix for v in variables])]
-	)
+def make_range(expr, var, n, sep):
+    return sep.join((expr.replace(var, str(i)) for i in range(1, n))) + ' \\dots ' + expr
 
 endglobal
 
-pre_expand "create_matrix(snip)"
-snippet "(small|[bBpvV])?mat(rix)?(\d+)x(\d+)" "Generate (small|[bBpvV])?matrix of *rows* by *columns*" br
+priority 0
+
+snippet doc
+\documentclass[12pt, a4paper]{article}
+$1
+\begin{document}
+	$0
+\end{document}
+
 endsnippet
 
-snippet "(\w+)(.)(\d+)(.\{\S+\}|[^{}\s]+)" "create list" r
-`!p
-if 'n' not in match.group(4):
-	snip.rv = ''
-else:
-	snip.rv = create_list(match.group(1), match.group(2), int(match.group(3)) + 1, match.group(4))
-`
+snippet subdoc
+\documentclass[$1]{subfiles}
+$2
+\begin{document}
+	$0
+\end{document}
+
 endsnippet
 
 # Select variable and press <tab> and type
-# x<count><variable to iterate><separator>
-snippet "x(\d+)(\w+)?(.*)?" "create list part 2" r
-`!p
-visual = snip.v.text
-var = match[2] if match else 'n'
-
-final = []
-for i in range(1, int(match[1])):
-	final.append(visual.replace(var, str(i), visual.count(var))) 
-
-final.append('\\dots')
-final.append(visual)
-
-snip.rv = match[3].join(final)
-`
+# range<count><variable to iterate><separator>
+snippet "range(\d+)(\w+)?(.*)?" "generate range(count,var,sep)" r
+`!p snip.rv = make_range(snip.v.text, match[2], int(match[1]), match[3])`
 endsnippet
 
-# math mode
-snippet im "math inline mode" i
-$${1}$`!p
-if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
-    snip.rv = ' '
-else:
-    snip.rv = ''
-`$2
-endsnippet
-
-snippet dm "math display mode" i
-\[ $1 \]$0
-endsnippet
-
-# enviroinment selection
-snippet beg "begin{} / end{}" i
-\begin{$1}
+snippet beg "environments"
+\begin{$1}$2
 	$0
 \end{$1}
 endsnippet
 
-snippet bseq "math equation enviroinment without index" i
-\begin{equation*}
-	$0
-\end{equation*}
+snippet im "math inline"
+$$1$$0
 endsnippet
 
-snippet beq "math equation enviroinment" i
-\begin{equation}
-	$0
-\end{equation}
+snippet dm "math display"
+\[ $1 \]$0
 endsnippet
 
-snippet bal "math aligned enviroinment" i
-\begin{aligned}
-	$0
-\end{aligned}
+snippet tit "italic" i
+\textit{${1:${VISUAL}}}$0
 endsnippet
 
-snippet bspl "math split enviroinment" i
-\begin{split}
-	$0
-\end{split}
+snippet tbf "bold" i
+\textbf{${1:${VISUAL}}}$0
 endsnippet
 
-snippet bge "math gathered enviroinment" i
-\begin{gathered}
-	$0
-\end{gathered}
-endsnippet
-
-# math symbols
-snippet "\\a(_\w+)?" "alpha" r
-\alpha`!p
-if match[1]: 
-	snip.rv = f"_{{{match[1][1:]}}}"
-`
-endsnippet
-
-snippet "\\b(_\w+)?" "beta" r
-\beta`!p
-if match[1]: 
-	snip.rv = f"_{{{match[1][1:]}}}"
-`
-endsnippet
-
-snippet "\\c(_\w+)?" "gamma" r
-\gamma`!p
-if match[1]: 
-	snip.rv = f"_{{{match[1][1:]}}}"
-`
-endsnippet
-
-snippet "\\d(_\w+)?" "delta" r
-\delta`!p
-if match[1]: 
-	snip.rv = f"_{{{match[1][1:]}}}"
-`
-endsnippet
-
-snippet "\\e(_\w+)?" "epsilon" r
-\epsilon`!p
-if match[1]: 
-	snip.rv = f"_{{{match[1][1:]}}}"
-`
-endsnippet
-
-snippet "\\t(_\w+)?" "theta" r
-\theta`!p
-if match[1]: 
-	snip.rv = f"_{{{match[1][1:]}}}"
-`
-endsnippet
-
-snippet "\\o(_\w+)?" "omega" r
-\omega`!p
-if match[1]: 
-	snip.rv = f"_{{{match[1][1:]}}}"
-`
-endsnippet
-
-snippet \inf "infinity" i
-\infty
-endsnippet
-
-# math shortcuts
-snippet @( "big (" i
-\left( $1 \right) $0
-endsnippet
-
-snippet @lr "left right parenthesis" i
-\left$1 $2 \right$1 $0
-endsnippet
-
-snippet del "delimiters (commath package)"
-\del{$1}$0
-endsnippet
-
-snippet ceil "ceil" i
-\ceil*{$1}$0
-endsnippet
-
-snippet floor "floor" i
-\floor*{$1}$0
-endsnippet
-
-snippet @ang "angles" i
-\langle $1 \rangle $0
-endsnippet
-
-snippet __ "underline" iA
-_{$1}$0
-endsnippet
-
-snippet ^^ "overline" iA
-^{$1}$0
-endsnippet
-
-# math expressions elements
-snippet @limit "limits" i
-\lim_{$1\to $2}$0
-endsnippet
-
-snippet @int "empty integral" i
-\int $1\ dx$0
-endsnippet
-
-snippet @intr "integral" i
-\int_{$1}^{$2} $3\ dx$0
-endsnippet
-
-snippet frac "fraction" i
-\frac{$1}{$2}$0
-endsnippet
-
-snippet @fr "fraction" i
-\frac{${VISUAL}}{$2}$0
-endsnippet
-
-snippet // "Fraction" i
-\\frac{$1}{$2}$0
-endsnippet
-
-snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wr
-\\frac{`!p snip.rv = match.group(1)`}{$1}$0
-endsnippet
-
-priority 1000
-snippet '^.*\)/' "() Fraction" wrA
-`!p
-stripped = match.string[:-1]
-depth = 0
-i = len(stripped) - 1
-while True:
-	if stripped[i] == ')': depth += 1
-	if stripped[i] == '(': depth -= 1
-	if depth == 0: break;
-	i -= 1
-snip.rv = stripped[0:i] + "\\frac{" + stripped[i+1:-1] + "}"
-`{$1}$0
-endsnippet
-
-snippet @sq "squared root" i
-\sqrt{$1}
-endsnippet
-
-snippet @series "series" i
-\sum_{n=$1}^{+\infty} $2{n}$0
-endsnippet
-
-snippet @x "times" i
-\times
-endsnippet
-
-# physics
-snippet @va "vector with line" iA
-\va{$1}$0
-endsnippet
-
-snippet @vb "bold vector" iA
-\vb{$1}$0
-endsnippet
-
-snippet \i "versor i" i
-\hat{\imath}
-endsnippet
-
-snippet \j "versor j" i
-\hat{\jmath}
-endsnippet
-
-snippet @dv "derivative" iA
-\dv{$1}{$2}$0
-endsnippet
-
-snippet "V\w" "vector" r
-\vc{`!p snip.rv = match[0][-1] `}
-endsnippet
-
-snippet "M\w" "matrix" r
-\matr{`!p snip.rv = match[0][-1] `}
-endsnippet
-
-snippet "iprod" "internalproduct" r
-\iprod{$1}{$2}$0
-endsnippet
-
-# text formatting
-snippet tit "italics text" i
-\textit{${VISUAL}$1}$0
-endsnippet
-
-snippet tbf "bold text" i
-\textbf{${VISUAL}$1}$0
-endsnippet
-
-snippet ttt "monospaced text" i
-\texttt{${VISUAL}$1}$0
-endsnippet
-
-# math formatting
-snippet mcal "mathcal" i
-\mathcal{$1}$0
-endsnippet
-
-snippet mbb "mathbb" i
-\mathbb{$1}$0
-endsnippet
-
-snippet mscr "mathscr" i
-\mathscr{$1}$0
-endsnippet
-
-snippet IR "real numbers" i
-\mathbb{R}$0
-endsnippet
-
-snippet IN "natural numbers" i
-\mathbb{N}$0
+snippet ttt "monospace" i
+\texttt{${1:${VISUAL}}}$0
 endsnippet
 

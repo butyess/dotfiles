@@ -1,0 +1,2 @@
+set buflisted
+wincmd L

@@ -12,6 +12,7 @@ Plug 'ncm2/ncm2-ultisnips'
 Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
 Plug 'ncm2/ncm2-neoinclude' | Plug 'Shougo/neoinclude.vim'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 
 " Buffer line
 " Plug 'ap/vim-buftabline'
@@ -39,6 +40,7 @@ map <Leader>P "+P
 
 let g:python_host_prog = '$HOME/.pyenv/neovim2/bin/python'
 let g:python3_host_prog = '$HOME/.pyenv/neovim3/bin/python'
+let g:iskeyword = 'a-z,A-Z,48-57,_,.,-,>,{,},[,],(,),:'
 let g:netrw_browser_split = 4
 let g:netrw_winsize = 18
 let g:netrw_banner = 0
@@ -65,6 +67,10 @@ let g:vimtex_compiler_latexmk = {
     \ 'build_dir': expand('%:r'),
     \}
 let g:vimtex_compiler_progname = 'nvr'
+let g:airline#extensions#tabline#enabled = 1
+
+" au BufNewFile,BufReadPost *.md set filetype=markdown
+let g:markdown_fenced_languages = ['javascript', 'json=javascript', 'c', 'bash=sh', 'python']
 
 command! Bd bp|bd #
 
