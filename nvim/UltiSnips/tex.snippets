@@ -1,6 +1,6 @@
 global !p
 def make_range(expr, var, n, sep):
-    return sep.join((expr.replace(var, str(i)) for i in range(1, n))) + ' \\dots ' + expr
+    return sep.join((expr.replace(var, str(i)) for i in range(1, n))) + '\\dots ' + expr
 
 endglobal
 
@@ -24,7 +24,7 @@ $2
 
 endsnippet
 
-# Select variable and press <tab> and type
+# Select variable, press <tab> and type
 # range<count><variable to iterate><separator>
 snippet "range(\d+)(\w+)?(.*)?" "generate range(count,var,sep)" r
 `!p snip.rv = make_range(snip.v.text, match[2], int(match[1]), match[3])`

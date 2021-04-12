@@ -1,0 +1,1 @@
+UltiSnipsAddFiletypes pandoc.markdown

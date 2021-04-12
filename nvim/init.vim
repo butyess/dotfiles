@@ -1,92 +1,71 @@
-call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin(stdpath('data') . '/plugged')
 
+Plug 'SirVer/ultisnips'
+" Plug 'honza/vim-snippets'
 Plug 'lervag/vimtex'
-Plug 'sirver/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'ryanoasis/vim-devicons'
 Plug 'Raimondi/delimitMate'
-Plug 'morhetz/gruvbox'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'kovetskiy/sxhkd-vim'
-Plug 'junegunn/goyo.vim'
-Plug 'godlygeek/tabular'
-Plug 'plasticboy/vim-markdown'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-ultisnips'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
+Plug 'ncm2/ncm2-neoinclude' | Plug 'Shougo/neoinclude.vim'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
+Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" Buffer line
+" Plug 'ap/vim-buftabline'
+" Plug 'vim-scripts/buftabs'
+" Plug 'bling/vim-bufferline'
+Plug 'vim-airline/vim-airline'
 
 call plug#end()
 
-""""""""""""""""""""""""""
-"  NVIM GENERAL OPTIONS  "
-""""""""""""""""""""""""""
-set nocompatible
-syntax on
-filetype on
-set hidden
-
-"" see after/ftplugin to see custom indentation per filetype
 filetype plugin indent on
 
 set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
-
-set noshowmode
+set hidden
 set number
-set encoding=UTF-8
-let maplocalleader = "\\"
-set cmdheight=2
-set updatetime=300
-set signcolumn=yes
 set mouse=a
+set completeopt=noinsert,menuone,noselect
 
-" Python options for interpreter,
-" See :h nvim-python
-let g:python_host_prog = '$HOME/.pyenv/neovim2/bin/python'
-let g:python3_host_prog = '$HOME/.pyenv/neovim3/bin/python'
+command! Bd bp|bd #
 
 map <Leader>y "+y
+map <Leader>Y "+Y
 map <Leader>p "+p
+map <Leader>P "+P
 
-""""""""""""""""""""""""""""""""
-"   PLUGINS & THEMES OPTIONS   "
-""""""""""""""""""""""""""""""""
+tnoremap <Esc> <C-\><C-n>
 
-" Theme
-syntax enable
-if (has("termguicolors"))
- set termguicolors
-endif
-set background=dark
-
-" Custom theme: gruvbox
-let g:gruvbox_italic=1
-colorscheme gruvbox
-
-" Enable transparent background
-hi Normal guibg=NONE ctermbg=NONE
-
-" Needed when :Goyo!
-augroup my-colors
-  autocmd!
-  autocmd ColorScheme * hi Normal guibg=NONE ctermbg=NONE
-augroup END
-
-" Airline
-let g:airline_theme='gruvbox'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-
-" COC Options
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Vimtex
+let g:python_host_prog = '$HOME/.pyenv/neovim2/bin/python'
+let g:python3_host_prog = '$HOME/.pyenv/neovim3/bin/python'
+let g:iskeyword = 'a-z,A-Z,48-57,_,.,-,>,{,},[,],(,),:'
+let g:netrw_browser_split = 4
+let g:netrw_winsize = 18
+let g:netrw_banner = 0
+let g:netrw_preview = 1
+let g:netrw_list_hide='\.o,\.obj,*\~,\.pyc,'
+let g:netrw_list_hide.='\.pyenv,'
+let g:netrw_list_hide.='\.git,'
+let g:netrw_list_hide.='\.tmp,'
+let g:UltiSnipsEditSplit="vertical"
+let g:delimitMate_matchpairs = "(:),[:],{:}"
+let g:delimitMate_quotes = "\" ' `"
+let g:delimitMate_nesting_quotes = ['"','`']
+let g:delimitMate_expand_cr = 1
+let g:delimitMate_expand_space = 1
+let g:delimitMate_expand_inside_quotes = 1
+let g:delimitMate_balance_matchpairs = 1
+let g:delimitMate_excluded_regions = "Comment,String"
 let g:tex_flavor  = 'latex'
-"let g:vimtex_view_general_viewer = 'okular'
+let g:tex_conceal = 'abdmg'
 let g:vimtex_view_general_viewer = 'zathura'
 let g:vimtex_fold_manual = 1
 let g:vimtex_latexmk_continuous = 1
@@ -94,36 +73,37 @@ let g:vimtex_compiler_latexmk = {
     \ 'build_dir': expand('%:r'),
     \}
 let g:vimtex_compiler_progname = 'nvr'
-let g:tex_conceal='abdmg'
+let PandocOpen = {file -> 'xdg-open' . shellescape(fnamemodify(a:file, ':p'))}
+let g:pandoc#command#custom_open = "PandocOpen"
+let g:pandoc#folding#fold_yaml = 1
+let g:pandoc#folding#fold_fenced_codeblocks = 1
+let g:pandoc#modules#disabled = ["bibliographies", "completion", "spell"]
+let g:markdown_fenced_languages = ['javascript', 'json=javascript', 'c', 'C=c', 'bash=sh', 'python', 'java']
+let g:pandoc#syntax#codeblocks#embeds#langs = g:markdown_fenced_languages
 
-" UltiSnippets
-let g:UltiSnipsExpandTrigger = '<tab>'
-let g:UltiSnipsJumpForwardTrigger = '<tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
-let g:UltiSnipsEditSplit="vertical"
-let g:UltiSnipsSnippetDirectories = ['$HOME/.config/nvim/UltiSnips']
+" powerline
+let g:airline#extensions#tabline#enabled = 1
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.dirty='⚡'
 
-" Netrw options
-let g:netrw_banner = 0
-let g:netrw_browse_split = 3
-let g:netrw_winsize = 25
-
-" Goyo
-let g:goyo_width = 95
-au User GoyoEnter :highlight EndOfBuffer ctermfg=black ctermbg=black
-au User GoyoEnter :let b:coc_suggest_disable=1
-au User GoyoLeave :let b:coc_suggest_disable=0
-
-" Pandoc
-let g:pandoc#modules#disabled = ["folding", "spell", "completion", "formatting"]
-let g:pandoc#command#autoexec_on_writes = 0
-let g:pandoc#command#autoexec_command = "Pandoc! pdf"
-
-" vim-markdown
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_math = 1
-let g:vim_markdown_new_list_item_indent = 2
-
+" ncm2
+au BufEnter * call ncm2#enable_for_buffer()
+au TextChangedI * call ncm2#auto_trigger()
+" inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+let g:ncm2#complete_length = [[1,1]]
+" inoremap <silent> <expr> <c-x> ncm2_ultisnips#expand_or("\<c-x>", 'n')
+" inoremap <c-x> <c-r>=ncm2#force_trigger(...)<cr>
+"
 """""""""""""""""""
 " Useful commands "
 """""""""""""""""""
@@ -131,4 +111,5 @@ let g:vim_markdown_new_list_item_indent = 2
 " :help <> | only - open help page as single window
 " :so ~/.config/nvim/init.vim - reload init.vim
 " :put = range(1,100) or :0put = range(1,100) to avoid blank line at top
-
+" `gq` is opposite of `J`
+" `gj` and `gh` to navigate in a wrapped line

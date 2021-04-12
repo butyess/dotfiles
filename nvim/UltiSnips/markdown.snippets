@@ -1,8 +1,16 @@
-snippet im "code" i
+snippet im "inline math" i
+$${1:${VISUAL}}$$0
+endsnippet
+
+snippet dm "display math"
+$$ ${1:${VISUAL}} $$$0
+endsnippet
+
+snippet ic "inline code" i
 \`${1:${VISUAL}}\`$0
 endsnippet
 
-snippet dm "big code"
+snippet dc "display code"
 \`\`\`${1:${VISUAL}}\`\`\`$0
 endsnippet
 
@@ -12,4 +20,8 @@ endsnippet
 
 snippet it "italic text" i
 *${1:${VISUAL}}*$0
+endsnippet
+
+snippet href "link" i
+[${1:${VISUAL}}]($2)$0
 endsnippet
