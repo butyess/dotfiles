@@ -28,7 +28,7 @@ xrandr --output DVI-D-1 --auto --left-of HDMI-1
 #################
 # Customization #
 #################
-feh --bg-fill $HOME/Pictures/Wallpapers/wall2.jpg &
+feh --bg-fill $HOME/Pictures/Wallpapers/wall9.jpg &
 picom --config $HOME/.config/picom/picom.conf &
 $HOME/.config/polybar/launch.sh &
 wmname LG3D &
@@ -39,18 +39,26 @@ wmname LG3D &
 dunst &
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 greenclip daemon &
-# /usr/bin/dropbox &
+/usr/bin/dropbox &
 telegram-desktop -startintray &
 
 #################
 # Bspwm configs #
 #################
-bspc monitor DVI-D-1 -d 1 4
-bspc monitor HDMI-1 -d 2 5
-bspc monitor VGA-1 -d 3 6
+
+# N_MONITORS=$(xrandr --listmonitors | grep Monitors | awk '{ print $2 }')
+# if [ N_MONITORS -eq '1' ]; then
+#     bspc monitor HDMI-1 -d 1 2 3 4 5
+# else
+
+bspc monitor DVI-D-0 -d 1 4
+bspc monitor HDMI-A-0 -d 2 5
+bspc monitor VGA-0 -d 3 6
+
+# fi
 
 bspc config border_width         1
-bspc config window_gap           3
+bspc config window_gap           10
 
 bspc config active_border_color     \#30302f
 bspc config normal_border_color     \#30302f
@@ -63,10 +71,13 @@ bspc config gapless_monocle      true
 bspc config click_to_focus      any
 bspc config ignore_ewmh_focus true
 
-# Rules
+# Rules -- use `xtitle $(bspc query -N -n .window)` to get window names
 bspc rule -a Gnome-calculator state=floating follow=on
 bspc rule -a ObinsKit state=tiled
 bspc rule -a Zathura state=tiled
 bspc rule -a QEMU state=floating follow=on
 bspc rule -a "Jetbrains Toolbox" state=floating follow=on
+bspc rule -a win0 state=floating follow=on
+bspc rule -a SimpleScreenRecorder state=floating follow=on
+# bspc rule -a "Org.gnome.Nautilus" state=floating follow=on
 
