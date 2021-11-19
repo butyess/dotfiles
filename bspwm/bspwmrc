@@ -11,11 +11,12 @@ numlockx &
 # Screen blanking and autosuspend
 xset s 0 0 &
 xset dpms 0 0 0 &
+
 xidlehook --socket /tmp/xidlehook_socket.sock \
     --not-when-fullscreen --not-when-audio \
-    --timer 540 'notify-send "Screen locking in 1 minute"' ''\
-    --timer 60 'xset dpms force off' '' \
-    --timer 300 'systemctl suspend' '' &
+    --timer 540 'notify-send "Suspending in 1 minute"' ''\
+    --timer 60 'betterlockscreen --lock dim' '' &
+#     --timer 60 'systemctl suspend' '' &
 
 
 # setxkbmap -layout us &
@@ -28,7 +29,7 @@ xrandr --output DVI-D-1 --auto --left-of HDMI-1
 #################
 # Customization #
 #################
-feh --bg-fill $HOME/Pictures/Wallpapers/wall9.jpg &
+feh --bg-fill $HOME/Pictures/Wallpapers/wall13.jpg &
 picom --config $HOME/.config/picom/picom.conf &
 $HOME/.config/polybar/launch.sh &
 wmname LG3D &
@@ -51,13 +52,13 @@ telegram-desktop -startintray &
 #     bspc monitor HDMI-1 -d 1 2 3 4 5
 # else
 
-bspc monitor DVI-D-0 -d 1 4
-bspc monitor HDMI-A-0 -d 2 5
-bspc monitor VGA-0 -d 3 6
+bspc monitor DVI-D-0 -d 1 2
+bspc monitor HDMI-A-0 -d 3 4
+bspc monitor VGA-0 -d 5 6
 
 # fi
 
-bspc config border_width         1
+bspc config border_width         2
 bspc config window_gap           10
 
 bspc config active_border_color     \#30302f

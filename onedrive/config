@@ -1,1 +1,2 @@
-skip_file = "~*|*~"
+skip_file = "~*|.~*|*~|4913|*.synctex*|*.tmp"
+skip_symlinks = true

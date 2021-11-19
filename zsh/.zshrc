@@ -68,11 +68,14 @@ ZSH_THEME="dieter"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git sudo colored-man-pages)
+plugins=(git sudo colored-man-pages sublime)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+# Custom keybindings
+bindkey \^U backward-kill-line
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -101,13 +104,27 @@ export EDITOR=$(which nvim)
 alias copy=xclip
 alias paste="xclip -o"
 alias dirsize="du -hs"
+# restart sxhkd
+# alias restart-sxhkd="DISPLAY=:0 sxhkd &"
+# alias unlock="faillock --reset --user $USER"
+# alias lxclogin="lxc shell ubuntu"
+#
+
+eval "$(pandoc --bash-completion)"
 
 if [ $TILIX_ID ] || [ $VTE_VERSION ]; then
         source /etc/profile.d/vte.sh
 fi
 
-# startx on tty1
+# # startx on tty1
+# if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+#         [[ ! $DISPLAY && $XDG_VTNR -eq 1  ]] && exec startx;
+#   # export XDG_SESSION_TYPE=x11
+#   # export GDK_BACKEND=x11
+#   # exec gnome-session
+# fi
+
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-  exec startx
+    startx
 fi
 

@@ -65,7 +65,7 @@ let g:delimitMate_expand_inside_quotes = 1
 let g:delimitMate_balance_matchpairs = 1
 let g:delimitMate_excluded_regions = "Comment,String"
 let g:tex_flavor  = 'latex'
-let g:tex_conceal = 'abdmg'
+let g:tex_conceal = "abdmgs"
 let g:vimtex_view_general_viewer = 'zathura'
 let g:vimtex_fold_manual = 1
 let g:vimtex_latexmk_continuous = 1
@@ -80,6 +80,7 @@ let g:pandoc#folding#fold_fenced_codeblocks = 1
 let g:pandoc#modules#disabled = ["bibliographies", "completion", "spell"]
 let g:markdown_fenced_languages = ['javascript', 'json=javascript', 'c', 'C=c', 'bash=sh', 'python', 'java']
 let g:pandoc#syntax#codeblocks#embeds#langs = g:markdown_fenced_languages
+let g:pandoc#syntax#conceal#use = 0
 
 " powerline
 let g:airline#extensions#tabline#enabled = 1

@@ -1,48 +1,31 @@
-###
-### wm independent hotkeys
-###
+#
+# wm independent hotkeys
+#
 
-# terminal emulator
 super + Return
-	tilix --profile=Bspwm --window-style=borderless &
-	#alacritty
+	alacritty &
 
-# web browser
 super + b
 	firefox &
 
 super + alt + b
 	chromium &
 
-# file manager
 super + e
 	GTK_THEME=Materia-dark-compact nautilus &
 
-# program launcher
 super + @space
-	$HOME/.config/sxhkd/launch_rofi.sh &
+	rofi -show drun -modi "drun,filebrowser,run" -m $(bspc query -M -m focused --names)
 
-# # toggle polybar
-# super + p
-# 	$HOME/.config/sxhkd/toggle_polybar.sh
+shift + alt + x
+	betterlockscreen --lock dim
 
-# window switcher
-alt + Tab
-	rofi -show window -modi "window"
-
-# clipboard manager
 super + v
 	rofi -show clipboard -modi "clipboard:greenclip print"
 
-## copy with screenshot
-#super + x
-#	/home/federico/.pyenv/normcapenv/launcher.sh
-
-# make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
 
-# Volume control
 XF86AudioLowerVolume
 	pulseaudio-control --volume-max 150 --volume-step 5 down
 
@@ -64,13 +47,15 @@ XF86AudioPrev
 XF86AudioNext
 	playerctl next
 
-# don't quit firefox
 ctrl + q
 	notify-send NONONO
 
-###
-### bspwm hotkeys
-###
+ctrl + {_,shift +} space
+	dunstctl close{_,-all}
+
+#
+# bspwm hotkeys
+#
 
 # quit/restart bspwm
 super + alt + {q,r}
@@ -80,14 +65,6 @@ super + alt + {q,r}
 super + {_,shift + }w
 	bspc node -{c,k}
 
-# set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
-
-# set the node flags
-super + ctrl + {m,x,y,z}
-	bspc node -g {marked,locked,sticky,private}
-
 # alternate between the tiled and monocle layout
 super + m
 	bspc desktop -l next
@@ -96,9 +73,9 @@ super + m
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
 
-###
-### Add/Remove desktops
-###
+#
+# Add/Remove desktops
+#
 
 # add a desktop to current monitor
 super + a
@@ -108,9 +85,9 @@ super + a
 super + shift + a
 	bspc desktop focused -r
 
-###
-### Window gap and border width
-###
+# swap the current node and the biggest window
+super + g
+	bspc node -s biggest.window
 
 # increase/decrease window gap
 super + {minus, plus}
@@ -118,7 +95,7 @@ super + {minus, plus}
 
 # default window gap
 super + equal
-	bspc config window_gap 7
+	bspc config window_gap 10
 
 # increase/decrease border width
 super + ctrl + {minus, plus}
@@ -126,23 +103,38 @@ super + ctrl + {minus, plus}
 
 # default border width
 super + ctrl + plus
-	bspc config border_width 1
+	bspc config border_width 2
 
-###
-### focus/swap
-###
+#
+# state/flags
+#
 
-# focus the node in the given direction
-super + {h,j,k,l}
-	bspc node -f {west,south,north,east}
+# set the window state
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
+
+# focus/swap the node in the given direction
+super + {_,ctrl + alt + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east} --follow
+
+# focus the node for the given path jump
+super + {semicolon,apostrophe,comma,period}
+	bspc node -f @{parent,brother,first,second}
 
 # focus the next/previous desktop in the current monitor
-super + shift + {j,k}
-	bspc desktop -f {next,prev}.local
+super + bracket{left,right}
+	bspc desktop -f {prev,next}.local
 
-# swap node with direction
-super + alt + ctrl + {h,j,k,l}
-	bspc node -s {west,south,north,east} --follow
+super + shift + {j, k}
+	bspc desktop -f {prev,next}.local
 
 # focus the next/previous window in the current desktop
 super + {_,shift + }c
@@ -156,13 +148,23 @@ super + {q,Tab}
 super + {1-3}
 	bspc monitor -f ^{1-3}
 
-# send to the focused desktop of the selected monitor
-super + shift + {1-3}
-	bspc node -d ^{1-3}:focused --follow
+# focus next desktop in monitor
+super + shift + brace{left,right}
+	bspc node -d {prev,next}.local
 
-###
-### preselect: super + ctrl
-###
+# send to next desktop
+super + {_, shift} + d
+	bspc node -d {next,prev}.local
+
+# focus the older or newer node in the focus history
+super + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+
+#
+# preselect
+#
 
 # preselect the direction
 super + ctrl + {h,j,k,l}
@@ -180,9 +182,9 @@ super + ctrl + space
 super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
-###
-### resize: super + alt
-###
+#
+# move/resize
+#
 
 # expand a window by moving one of its side outward
 super + alt + {h,j,k,l}
@@ -192,22 +194,16 @@ super + alt + {h,j,k,l}
 super + alt + shift + {h,j,k,l}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
-###
-### move: super + shift or super + arrow
-###
-
 # move the node to the monitor in the direction
 super + shift + {h,l}
 	bspc node -m {prev,next} --follow
 
-# move the node in the next desktop of current monitor
-super + d
-	bspc node -d next.local
 
-# move the node in the next desktop of current monitor
-super + shift + d
-	bspc node -d prev.local
+# move to the focused desktop of the selected monitor
+super + shift + {1-3}
+	bspc node -d ^{1-3}:focused --follow
 
 # move a floating window
 super + {Left,Down,Up,Right}
 	bspc node -v {-20 0,0 20,0 -20,20 0}
+
