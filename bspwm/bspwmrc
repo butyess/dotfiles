@@ -15,8 +15,8 @@ xset dpms 0 0 0 &
 xidlehook --socket /tmp/xidlehook_socket.sock \
     --not-when-fullscreen --not-when-audio \
     --timer 540 'notify-send "Suspending in 1 minute"' ''\
-    --timer 60 'betterlockscreen --lock dim' '' &
-#     --timer 60 'systemctl suspend' '' &
+    --timer 60 'systemctl suspend' '' &
+#     --timer 60 'betterlockscreen --lock dim' '' &
 
 
 # setxkbmap -layout us &
@@ -29,7 +29,7 @@ xrandr --output DVI-D-1 --auto --left-of HDMI-1
 #################
 # Customization #
 #################
-feh --bg-fill $HOME/Pictures/Wallpapers/wall13.jpg &
+feh --bg-fill $HOME/Pictures/Wallpapers/wall14.jpg &
 picom --config $HOME/.config/picom/picom.conf &
 $HOME/.config/polybar/launch.sh &
 wmname LG3D &
@@ -59,7 +59,7 @@ bspc monitor VGA-0 -d 5 6
 # fi
 
 bspc config border_width         2
-bspc config window_gap           10
+bspc config window_gap           4
 
 bspc config active_border_color     \#30302f
 bspc config normal_border_color     \#30302f

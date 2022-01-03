@@ -47,10 +47,10 @@ XF86AudioPrev
 XF86AudioNext
 	playerctl next
 
-ctrl + q
-	notify-send NONONO
+# ctrl + q
+# 	notify-send NONONO
 
-ctrl + {_,shift +} space
+ctrl + {_,alt +} space
 	dunstctl close{_,-all}
 
 #
@@ -95,7 +95,7 @@ super + {minus, plus}
 
 # default window gap
 super + equal
-	bspc config window_gap 10
+	bspc config window_gap 4
 
 # increase/decrease border width
 super + ctrl + {minus, plus}
