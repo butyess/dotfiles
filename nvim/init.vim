@@ -15,12 +15,16 @@ Plug 'ncm2/ncm2-neoinclude' | Plug 'Shougo/neoinclude.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'morhetz/gruvbox'
+Plug 'chriskempson/base16-vim'
+Plug 'neovimhaskell/haskell-vim'
 
 " Buffer line
 " Plug 'ap/vim-buftabline'
 " Plug 'vim-scripts/buftabs'
 " Plug 'bling/vim-bufferline'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
@@ -56,8 +60,6 @@ let g:netrw_list_hide.='\.pyenv,'
 let g:netrw_list_hide.='\.git,'
 let g:netrw_list_hide.='\.tmp,'
 let g:UltiSnipsEditSplit="vertical"
-let g:delimitMate_matchpairs = "(:),[:],{:}"
-let g:delimitMate_quotes = "\" ' `"
 let g:delimitMate_nesting_quotes = ['"','`']
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
@@ -68,7 +70,7 @@ let g:tex_flavor  = 'latex'
 let g:tex_conceal = "abdmgs"
 let g:vimtex_view_general_viewer = 'zathura'
 let g:vimtex_fold_manual = 1
-let g:vimtex_latexmk_continuous = 1
+" let g:vimtex_latexmk_continuous = 1 "Deprecated
 let g:vimtex_compiler_latexmk = {
     \ 'build_dir': expand('%:r'),
     \}
@@ -82,8 +84,15 @@ let g:markdown_fenced_languages = ['javascript', 'json=javascript', 'c', 'C=c', 
 let g:pandoc#syntax#codeblocks#embeds#langs = g:markdown_fenced_languages
 let g:pandoc#syntax#conceal#use = 0
 
-" powerline
-let g:airline#extensions#tabline#enabled = 1
+"" Theme
+let g:gruvbox_italic=1
+let g:grubvox_contrast_light="hard"
+set background=dark
+set termguicolors
+colorscheme base16-default-dark
+
+"" airline
+let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
@@ -92,16 +101,22 @@ let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
 let g:airline_right_alt_sep = ''
 let g:airline_symbols.branch = ''
+let g:airline_symbols.colnr = ' :'
 let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = '☰'
-let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.linenr = ' :'
+let g:airline_symbols.maxlinenr = '☰ '
 let g:airline_symbols.dirty='⚡'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
 
 " ncm2
 au BufEnter * call ncm2#enable_for_buffer()
 au TextChangedI * call ncm2#auto_trigger()
 " inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
-let g:ncm2#complete_length = [[1,1]]
+" let g:ncm2#complete_length = [[1,1]]
 " inoremap <silent> <expr> <c-x> ncm2_ultisnips#expand_or("\<c-x>", 'n')
 " inoremap <c-x> <c-r>=ncm2#force_trigger(...)<cr>
 "
