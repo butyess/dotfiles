@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export BSPWM_BORDER_WIDTH=2
+export BSPWM_WINDOW_GAP=4
+
 pgrep -x sxhkd > /dev/null || sxhkd &
 
 ########
@@ -58,8 +61,8 @@ bspc monitor VGA-0 -d 5 6
 
 # fi
 
-bspc config border_width         2
-bspc config window_gap           4
+bspc config border_width         $BSPWM_BORDER_WIDTH
+bspc config window_gap           $BSPWM_WINDOW_GAP
 
 bspc config active_border_color     \#30302f
 bspc config normal_border_color     \#30302f
@@ -70,7 +73,7 @@ bspc config borderless_monocle   true
 bspc config gapless_monocle      true
 
 bspc config click_to_focus      any
-bspc config ignore_ewmh_focus true
+bspc config ignore_ewmh_focus   true
 
 # Rules -- use `xtitle $(bspc query -N -n .window)` to get window names
 bspc rule -a Gnome-calculator state=floating follow=on

@@ -1,209 +1,100 @@
-#
-# wm independent hotkeys
-#
+XF86Audio{Lower,Raise}Volume
+	pulseaudio-control --volume-max 150 --volume-step 5 {down,up}
 
-super + Return
-	alacritty &
-
-super + b
-	firefox &
-
-super + alt + b
-	chromium &
-
-super + e
-	GTK_THEME=Materia-dark-compact nautilus &
-
-super + @space
-	rofi -show drun -modi "drun,filebrowser,run" -m $(bspc query -M -m focused --names)
-
-shift + alt + x
-	betterlockscreen --lock dim
-
-super + v
-	rofi -show clipboard -modi "clipboard:greenclip print"
-
-super + Escape
-	pkill -USR1 -x sxhkd
-
-XF86AudioLowerVolume
-	pulseaudio-control --volume-max 150 --volume-step 5 down
-
-XF86AudioRaiseVolume
-	pulseaudio-control --volume-max 150 --volume-step 5 up
-
-XF86AudioMute
-	pulseaudio-control togmute
-
-XF86AudioPlay
-	playerctl play-pause
-
-XF86AudioStop
-	playerctl pause
-
-XF86AudioPrev
-	playerctl previous
-
-XF86AudioNext
-	playerctl next
-
-# ctrl + q
-# 	notify-send NONONO
+XF86Audio{Mute,Play,Stop,Prev,Next}
+	pulseaudio-control {togmute,play-pause,pause,previous,next}
 
 ctrl + {_,alt +} space
 	dunstctl close{_,-all}
 
-#
-# bspwm hotkeys
-#
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
 
-# quit/restart bspwm
-super + alt + {q,r}
-	bspc {quit,wm -r}
+super + Escape
+	bspc monitor ^1 -a BOSS1 ; \
+	bspc desktop -f BOSS1 ; \
+	bspc monitor ^2 -a BOSS2 ; \
+	bspc desktop -f BOSS2 ; \
+	bspc monitor ^3 -a BOSS3 ; \
+	bspc desktop -f BOSS3
 
-# close and kill
-super + {_,shift + }w
-	bspc node -{c,k}
+super + shift + Escape
+	bspc desktop BOSS1 -r ; \
+	bspc desktop BOSS2 -r ; \
+	bspc desktop BOSS3 -r
 
-# alternate between the tiled and monocle layout
+super + @space
+	rofi -show drun -modi "drun,filebrowser,run" -m $(bspc query -M -m focused --names)
+
+super + Return
+	alacritty &
+
+super + v
+	rofi -show clipboard -modi "clipboard:greenclip print" -m $(bspc query -M -m focused --names)
+
 super + m
 	bspc desktop -l next
 
-# send the newest marked node to the newest preselected node
-super + y
-	bspc node newest.marked.local -n newest.!automatic.local
+super + o ; {f,n,c,t}
+	{firefox,nautilus,chromium,telegram-desktop}
 
-#
-# Add/Remove desktops
-#
+super + {shift +,_} a
+	bspc {desktop focused -r, monitor -a X}
 
-# add a desktop to current monitor
-super + a
-	bspc monitor focused -a X
-
-# delete current desktop
-super + shift + a
-	bspc desktop focused -r
-
-# swap the current node and the biggest window
-super + g
-	bspc node -s biggest.window
-
-# increase/decrease window gap
-super + {minus, plus}
-	bspc config window_gap $((`bspc config -d focused window_gap` {+ 1, - 1}))
-
-# default window gap
-super + equal
-	bspc config window_gap 4
-
-# increase/decrease border width
-super + ctrl + {minus, plus}
-	bspc config border_width $((`bspc config -d focused border_width` {+ 1, - 1}))
-
-# default border width
-super + ctrl + plus
-	bspc config border_width 2
-
-#
-# state/flags
-#
-
-# set the window state
-super + {t,shift + t,s,f}
+super + q ; {t,p,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
-# set the node flags
-super + ctrl + {m,x,y,z}
-	bspc node -g {marked,locked,sticky,private}
+super + {_,shift +} w
+	bspc node -{c,k}
 
-#
-# focus/swap
-#
+super + {h,j,k,l}
+	bspc node -f {west,south,north,east}
 
-# focus/swap the node in the given direction
-super + {_,ctrl + alt + }{h,j,k,l}
-	bspc node -{f,s} {west,south,north,east} --follow
-
-# focus the node for the given path jump
-super + {semicolon,apostrophe,comma,period}
-	bspc node -f @{parent,brother,first,second}
-
-# focus the next/previous desktop in the current monitor
-super + bracket{left,right}
-	bspc desktop -f {prev,next}.local
-
-super + shift + {j, k}
-	bspc desktop -f {prev,next}.local
-
-# focus the next/previous window in the current desktop
 super + {_,shift + }c
 	bspc node -f {next,prev}.local.!hidden.window
 
-# focus the last node/desktop
-super + {q,Tab}
-	bspc {node,desktop} -f last
-
-# focus the monitor
 super + {1-3}
 	bspc monitor -f ^{1-3}
 
-# focus next desktop in monitor
-super + shift + brace{left,right}
-	bspc node -d {prev,next}.local
+super + {bracketleft, bracketright}
+	bspc desktop -f {prev,next}.local
 
-# send to next desktop
-super + {_, shift} + d
-	bspc node -d {next,prev}.local
+super + {semicolon,apostrophe,period,slash}
+	bspc node -f @{parent,brother,first,second}
 
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
+super + shift + {h,j,k,l}
+	bspc node -s {west,south,north,east} --follow
 
-#
-# preselect
-#
-
-# preselect the direction
-super + ctrl + {h,j,k,l}
-	bspc node -p {west,south,north,east}
-
-# preselect the ratio
-super + ctrl + {1-9}
-	bspc node -o 0.{1-9}
-
-# cancel the preselection for the focused node
-super + ctrl + space
-	bspc node -p cancel
-
-# cancel the preselection for the focused desktop
-super + ctrl + shift + space
-	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
-
-#
-# move/resize
-#
-
-# expand a window by moving one of its side outward
-super + alt + {h,j,k,l}
-	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
-
-# contract a window by moving one of its side inward
-super + alt + shift + {h,j,k,l}
-	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
-
-# move the node to the monitor in the direction
-super + shift + {h,l}
-	bspc node -m {prev,next} --follow
-
-
-# move to the focused desktop of the selected monitor
 super + shift + {1-3}
 	bspc node -d ^{1-3}:focused --follow
 
-# move a floating window
-super + {Left,Down,Up,Right}
-	bspc node -v {-20 0,0 20,0 -20,20 0}
+super + {braceleft,braceright}
+	bspc node -d {prev,next}.local
+
+#super + alt + {h,j,k,l}
+#	n=10; \
+#	{ d1=left;   d2=right;  dx=-$n; dy=0;   \
+#	, d1=bottom; d2=top;    dx=0;   dy=$n;  \
+#	, d1=top;    d2=bottom; dx=0;   dy=-$n; \
+#	, d1=right;  d2=left;   dx=$n;  dy=0;   \
+#	} \
+#	bspc node --resize $d1 $dx $dy || bspc node --resize $d2 $dx $dy
+
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+super + alt + s
+	pkill -USR1 -x sxhkd
+
+super + alt + x
+	betterlockscreen --lock dim
+
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+super + z ; {r,R,t,f,F,e,b,c,C}
+	bspc node -{R 90,R 270,R 180,F horizontal,F vertical,E,B,C forward,C backward}
 
