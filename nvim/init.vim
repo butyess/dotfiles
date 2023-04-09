@@ -13,16 +13,14 @@ Plug 'ncm2/ncm2-path'
 Plug 'ncm2/ncm2-syntax' | Plug 'Shougo/neco-syntax'
 Plug 'ncm2/ncm2-neoinclude' | Plug 'Shougo/neoinclude.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
-Plug 'vim-pandoc/vim-pandoc'
+" Plug 'vim-pandoc/vim-pandoc'
+Plug 'Marfisc/vim-pandoc' " following https://github.com/vim-pandoc/vim-pandoc/pull/385
 Plug 'vim-pandoc/vim-pandoc-syntax'
-Plug 'morhetz/gruvbox'
-Plug 'chriskempson/base16-vim'
+" Plug 'morhetz/gruvbox'
+" Plug 'chriskempson/base16-vim'
 Plug 'neovimhaskell/haskell-vim'
 
 " Buffer line
-" Plug 'ap/vim-buftabline'
-" Plug 'vim-scripts/buftabs'
-" Plug 'bling/vim-bufferline'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -31,13 +29,17 @@ call plug#end()
 filetype plugin indent on
 
 set expandtab
-set shiftwidth=4
-set softtabstop=4
 set tabstop=4
+set shiftwidth=4
+set nosmarttab
+
 set hidden
 set number
-set mouse=a
+set mousemodel=extend
 set completeopt=noinsert,menuone,noselect
+
+set textwidth=0
+set wrapmargin=0
 
 command! Bd bp|bd #
 
@@ -80,18 +82,23 @@ let g:pandoc#command#custom_open = "PandocOpen"
 let g:pandoc#folding#fold_yaml = 1
 let g:pandoc#folding#fold_fenced_codeblocks = 1
 let g:pandoc#modules#disabled = ["bibliographies", "completion", "spell"]
-let g:markdown_fenced_languages = ['javascript', 'json=javascript', 'c', 'C=c', 'bash=sh', 'python', 'java']
+let g:markdown_fenced_languages = ['javascript', 'json=javascript', 'c', 'C=c',
+            \ 'bash=sh', 'python', 'java', 'haskell', 'rust']
 let g:pandoc#syntax#codeblocks#embeds#langs = g:markdown_fenced_languages
 let g:pandoc#syntax#conceal#use = 0
+let g:haskell_indent_disable = 1
 
 "" Theme
-let g:gruvbox_italic=1
-let g:grubvox_contrast_light="hard"
-set background=dark
-set termguicolors
-colorscheme base16-default-dark
+" let g:gruvbox_italic=1
+" let g:grubvox_contrast_light="hard"
+" set background=dark
+" set termguicolors
+" colorscheme base16-default-dark
+hi Normal ctermbg=Black
+hi NonText ctermbg=Black
+let g:airline_theme='zenburn'
 
-"" airline
+" airline
 let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
