@@ -1,7 +1,6 @@
 return {
   -- Main LSP Configuration
   'neovim/nvim-lspconfig',
-  tag = 'v2.6.0',
   dependencies = {
     -- Status updates for LSP.
     { 'j-hui/fidget.nvim', opts = {} },
