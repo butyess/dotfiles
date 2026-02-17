@@ -56,9 +56,16 @@ return {
     vim.api.nvim_create_autocmd('LspAttach', {
       callback = function(ev)
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        local opts = { buffer = ev.buf }
 
-        -- signature help
-        vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = ev.buf })
+        -- Global LSP defaults (explicitly set)
+        vim.keymap.set('n', 'grn', vim.lsp.buf.rename, opts)
+        vim.keymap.set({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, opts)
+        vim.keymap.set('n', 'grr', vim.lsp.buf.references, opts)
+        vim.keymap.set('n', 'gri', vim.lsp.buf.implementation, opts)
+        vim.keymap.set('n', 'grt', vim.lsp.buf.type_definition, opts)
+        vim.keymap.set('n', 'gO', vim.lsp.buf.document_symbol, opts)
+        vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
 
         -- Auto-trigger signature help on ( and ,
         if client:supports_method('textDocument/signatureHelp') then
