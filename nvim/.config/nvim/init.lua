@@ -72,5 +72,5 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 require("config.lazy")
 
 -- Treesitter
-require'nvim-treesitter'.install { 'python', 'json' }
+require'nvim-treesitter'.install { 'python', 'json', 'markdown' }
 
