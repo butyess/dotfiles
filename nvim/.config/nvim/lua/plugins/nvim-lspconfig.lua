@@ -74,8 +74,8 @@ return {
             callback = function()
               local line = vim.api.nvim_get_current_line()
               local col = vim.api.nvim_win_get_cursor(0)[2]
-              local char = col > 0 and line:sub(col, col) or ""
-              if char == "(" or char == "," then
+              local char = col > 0 and line:sub(col + 1, col + 1) or ""
+              if char == "(" or char == "," or char == "." then
                 vim.lsp.buf.signature_help()
               end
             end,
