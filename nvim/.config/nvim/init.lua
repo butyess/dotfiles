@@ -26,6 +26,10 @@ vim.opt.foldlevelstart = 99
 vim.opt.foldcolumn = "1"
 vim.opt.number = true
 
+-- Persistent folds configuration
+vim.opt.viewoptions = 'folds,cursor,curdir'
+vim.opt.viewdir = vim.fn.stdpath('data') .. '/view'
+
 -- Other options
 vim.g.have_nerd_font = false
 vim.o.number = true
@@ -53,6 +57,29 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function() vim.hl.on_yank { timeout = 200 } end,
+})
+
+-- Persistent folds - save and restore fold states when switching buffers
+vim.api.nvim_create_autocmd('BufWinLeave', {
+  desc = 'Save fold state when leaving buffer',
+  group = vim.api.nvim_create_augroup('persistent-folds', { clear = true }),
+  pattern = '*',
+  callback = function()
+    if vim.bo.buftype == '' and vim.fn.expand('%') ~= '' then
+      vim.cmd('mkview!')
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  desc = 'Restore fold state when entering buffer',
+  group = vim.api.nvim_create_augroup('persistent-folds', { clear = false }),
+  pattern = '*',
+  callback = function()
+    if vim.bo.buftype == '' and vim.fn.expand('%') ~= '' then
+      vim.cmd('silent! loadview')
+    end
+  end,
 })
 
 -- Restore cursor position on file open
