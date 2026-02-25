@@ -52,7 +52,7 @@ return {
       }),
     })
 
-    -- LspAttach keybindings and signature help
+    -- LspAttach keybindings
     vim.api.nvim_create_autocmd('LspAttach', {
       callback = function(ev)
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
@@ -67,20 +67,6 @@ return {
         vim.keymap.set('n', 'gO', vim.lsp.buf.document_symbol, opts)
         vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
 
-        -- Auto-trigger signature help on ( and ,
-        if client:supports_method('textDocument/signatureHelp') then
-          vim.api.nvim_create_autocmd("TextChangedI", {
-            buffer = ev.buf,
-            callback = function()
-              local line = vim.api.nvim_get_current_line()
-              local col = vim.api.nvim_win_get_cursor(0)[2]
-              local char = col > 0 and line:sub(col + 1, col + 1) or ""
-              if char == "(" or char == "," or char == "." then
-                vim.lsp.buf.signature_help()
-              end
-            end,
-          })
-        end
       end,
     })
 
