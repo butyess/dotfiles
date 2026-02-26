@@ -62,7 +62,14 @@ return {
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
       }, {
-        { name = "path" },
+        { 
+          name = "path",
+          option = {
+            get_cwd = function()
+              return vim.fn.getcwd()
+            end,
+          },
+        },
         { name = 'buffer' },
       }),
     })
