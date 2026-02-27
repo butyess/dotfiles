@@ -23,8 +23,8 @@ end, { desc = 'Reload current file' })
 
 -- Enable fold but do not fold by default
 vim.opt.foldlevelstart = 99
-vim.opt.foldcolumn = "1"
 vim.opt.number = true
+vim.opt.relativenumber = true
 
 -- Persistent folds configuration
 vim.opt.viewoptions = 'folds,cursor,curdir'
@@ -32,7 +32,6 @@ vim.opt.viewdir = vim.fn.stdpath('data') .. '/view'
 
 -- Other options
 vim.g.have_nerd_font = false
-vim.o.number = true
 vim.o.mouse = 'a'
 vim.o.breakindent = true
 vim.o.undofile = true
