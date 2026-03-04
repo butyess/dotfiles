@@ -2,7 +2,6 @@
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
       "@mohak34/opencode-notifier@latest",
-      "@franlol/opencode-md-table-formatter@latest",
   ],
   "formatter": false,
   "lsp": false,
@@ -14,6 +13,9 @@
       },
       "models": {
         "qwen3:30b": {
+          "tools": true
+        },
+        "qwen3.5:35b": {
           "tools": true
         }
       }
