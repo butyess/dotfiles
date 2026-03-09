@@ -75,23 +75,57 @@ return {
       }),
     })
 
-    -- LspAttach keybindings
-    vim.api.nvim_create_autocmd('LspAttach', {
-      callback = function(ev)
-        local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        local opts = { buffer = ev.buf }
+  -- Function to add all missing imports via code actions
+  local function add_all_imports()
+    local bufnr = vim.api.nvim_get_current_buf()
 
-        -- Global LSP defaults (explicitly set)
-        vim.keymap.set('n', 'grn', vim.lsp.buf.rename, opts)
-        vim.keymap.set({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', 'grr', vim.lsp.buf.references, opts)
-        vim.keymap.set('n', 'gri', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', 'grt', vim.lsp.buf.type_definition, opts)
-        vim.keymap.set('n', 'gO', vim.lsp.buf.document_symbol, opts)
-        vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
+    local function execute_imports(err, actions)
+      if err or not actions then return end
 
-      end,
+      local import_actions = vim.tbl_filter(function(action)
+        local title = action.title:lower()
+        return title:match('import') or title:match('require')
+      end, actions)
+
+      for _, action in ipairs(import_actions) do
+        vim.lsp.buf.apply_code_action(action)
+      end
+    end
+
+    vim.lsp.buf.code_actions({ context = { only = { 'quickfix', 'source' } } }, execute_imports)
+  end
+
+  -- Function to organize imports via LSP command
+  local function organize_imports()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local params = vim.lsp.util.make_range_params()
+    params.context = {}
+
+    vim.lsp.buf.execute_command({
+      command = 'source.organizeImports',
+      arguments = { vim.uri_from_bufnr(bufnr) },
     })
+  end
+
+  -- LspAttach keybindings
+  vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(ev)
+      local client = vim.lsp.get_client_by_id(ev.data.client_id)
+      local opts = { buffer = ev.buf }
+
+      -- Global LSP defaults (explicitly set)
+      vim.keymap.set('n', 'grn', vim.lsp.buf.rename, opts)
+      vim.keymap.set({ 'n', 'v' }, 'gra', vim.lsp.buf.code_action, opts)
+      vim.keymap.set({ 'n', 'v' }, 'grA', add_all_imports, opts)
+      vim.keymap.set({ 'n', 'v' }, 'gro', organize_imports, opts)
+      vim.keymap.set('n', 'grr', vim.lsp.buf.references, opts)
+      vim.keymap.set('n', 'gri', vim.lsp.buf.implementation, opts)
+      vim.keymap.set('n', 'grt', vim.lsp.buf.type_definition, opts)
+      vim.keymap.set('n', 'gO', vim.lsp.buf.document_symbol, opts)
+      vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help, opts)
+
+    end,
+  })
 
   end
 }
