@@ -15,10 +15,18 @@ return {
   },
   config = function()
 
+    -- languages
     vim.lsp.config('ty', {
       cmd = { 'uvx', 'ty', 'server' },
     })
     vim.lsp.enable('ty')
+
+    vim.lsp.config('wgsl_analyzer', {
+      cmd = { "wgsl-analyzer" },
+      filetypes = { "wgsl" },
+      root_markers = { ".git" },
+    })
+    vim.lsp.enable('wgsl_analyzer')
 
     local cmp = require('cmp')
     local cmp_lsp = require('cmp_nvim_lsp')
