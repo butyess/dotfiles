@@ -15,11 +15,21 @@ return {
   },
   config = function()
 
-    -- languages
+    -- language servers
     vim.lsp.config('ty', {
       cmd = { 'uvx', 'ty', 'server' },
     })
-    vim.lsp.enable('ty')
+    -- vim.lsp.enable('ty')
+
+    vim.lsp.config('ruff', {
+      cmd = { 'uvx', 'ruff', 'server' },
+    })
+    -- vim.lsp.enable('ruff')
+
+    vim.lsp.config('basedpyright', {
+      cmd = { 'uvx', '--from', 'basedpyright', 'basedpyright-langserver', '--stdio', },
+    })
+    vim.lsp.enable("basedpyright")
 
     vim.lsp.config('wgsl_analyzer', {
       cmd = { "wgsl-analyzer" },
