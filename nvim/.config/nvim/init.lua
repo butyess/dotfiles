@@ -181,7 +181,8 @@ vim.api.nvim_create_autocmd('PackChanged', { callback = function(ev)
     vim.cmd('TSUpdate')
   end
 end })
-require('nvim-treesitter').install { 'python', 'json', 'markdown', 'wgsl' }
+require('nvim-treesitter').install({ 'python', 'json', 'markdown', 'wgsl' })
+require('nvim-treesitter').setup()
 
 -- LSP
 vim.lsp.enable({ 'lua_ls' })
