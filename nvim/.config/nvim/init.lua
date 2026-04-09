@@ -118,6 +118,11 @@ vim.pack.add({
 })
 
 -- Color scheme
+require("vscode").setup({
+  color_overrides = {
+    vscCursorDarkDark = '#2a2a2a',
+  },
+})
 vim.cmd.colorscheme("vscode")
 
 -- Mini
