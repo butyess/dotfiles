@@ -1,4 +1,4 @@
-vim.opt.conceallevel = 2
+vim.opt.conceallevel = 0
 
 vim.g.tex_flavor = 'latex'
 vim.g.tex_conceal = 'abdmgs'
