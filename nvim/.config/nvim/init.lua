@@ -148,7 +148,15 @@ vim.keymap.set("n", "<leader>x", function() require("mini.bufremove").delete() e
 vim.keymap.set("n", "<leader>X", function() require("mini.bufremove").delete(0, true) end, { desc = "Force delete buffer (keep window layout)" })
 
 require('mini.pick').setup()
-vim.keymap.set('n', '<leader>ff', MiniPick.builtin.files, { desc = 'Find files' })
+vim.keymap.set('n', '<leader>ff', function()
+  local ignorecase, smartcase = vim.o.ignorecase, vim.o.smartcase
+  vim.o.ignorecase, vim.o.smartcase = true, false
+
+  local ok, res = pcall(MiniPick.builtin.files)
+  vim.o.ignorecase, vim.o.smartcase = ignorecase, smartcase
+  if not ok then error(res) end
+  return res
+end, { desc = 'Find files' })
 vim.keymap.set('n', '<leader>fg', MiniPick.builtin.grep_live, { desc = 'Live grep' })
 -- pick buffer with wiping option
 local wipeout_cur = function()
