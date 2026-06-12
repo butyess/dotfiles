@@ -5,4 +5,15 @@
   ],
   "formatter": false,
   "lsp": false,
+  "mcp": {
+    "blender-mcp": {
+      "type": "local",
+      "command": ["uvx", "blender-mcp"],
+      "enabled": true,
+      "environment": {
+        "BLENDER_HOST": "localhost",
+        "BLENDER_PORT": "9876"
+      }
+    }
+  }
 }
